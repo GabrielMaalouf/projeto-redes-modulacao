@@ -1,6 +1,5 @@
 # src/channel.py
-# Etapa 4 do sistema: canal ruidoso.
-#
+
 # Dois cenários:
 #  1) AWGN: ruído gaussiano branco aditivo, com a SNR controlada por Eb/N0 (em dB).
 #  2) Rajadas: o canal alterna entre um estado BOM (SNR nominal) e um estado RUIM
@@ -13,16 +12,13 @@
 #  - Como os símbolos têm energia média 1 (contrato com o modulation.py):
 #        Es/N0 = Eb/N0 * bits_por_simbolo
 #        variância do ruído por eixo (I e Q) = 1 / (2 * Es/N0)
-#
-# As duas funções devolvem (recebidos, estados):
-#  - recebidos: símbolos com ruído (mesmo tamanho dos símbolos enviados)
-#  - estados:   0 = estado bom, 1 = estado ruim (no AWGN é sempre 0)
+
 
 import math
 import numpy as np
 
 
-# Parâmetros das rajadas (ficam registrados aqui e no README)
+# Parâmetros das rajadas:
 PROB_BOM_PARA_RUIM = 0.01     # chance de, a cada símbolo, o canal passar de bom para ruim
 PROB_RUIM_PARA_BOM = 0.1      # chance de, a cada símbolo, o canal voltar de ruim para bom
 QUEDA_SNR_RUIM_DB = 10        # no estado ruim a SNR cai 10 dB
