@@ -4,7 +4,7 @@
 import numpy as np
 from src.message import gerar_bits_aleatorios
 from src.line_coding import (manchester_codificar, manchester_decodificar,
-                             ami_codificar, ami_decidir, ami_decodificar)
+                             nrzi_codificar, nrzi_decodificar)
 
 
 # ---------- Manchester ----------
@@ -41,47 +41,37 @@ def test_manchester_detecta_erro():
     assert erros == [0]
 
 
-# ---------- AMI ----------
+# ---------- NRZ-I ----------
 
-def test_ami_valores():
-    # 1 -> +1, 0 -> 0, 1 -> -1, 1 -> +1
-    niveis = ami_codificar(np.array([1, 0, 1, 1]))
-    assert list(niveis) == [1, 0, -1, 1]
+def test_nrzi_valores():
+    # bits 1,1,0,1,0,0 -> inverte, inverte, mantém, inverte, mantém, mantém
+    niveis = nrzi_codificar(np.array([1, 1, 0, 1, 0, 0]))
+    assert list(niveis) == [1, 0, 0, 1, 1, 1]
 
 
-def test_ami_ida_e_volta():
+def test_nrzi_tamanho():
+    # 1 chip por bit: a saída tem o mesmo tamanho da entrada
+    niveis = nrzi_codificar(np.array([1, 0, 1, 1]))
+    assert len(niveis) == 4
+
+
+def test_nrzi_ida_e_volta():
     bits = np.array([1, 1, 0, 0, 1, 0, 1, 1])
-    niveis = ami_codificar(bits)
-    recuperado, violacoes = ami_decodificar(niveis)
+    recuperado = nrzi_decodificar(nrzi_codificar(bits))
     assert list(recuperado) == list(bits)
-    assert violacoes == []
 
 
-def test_ami_ida_e_volta_aleatorio():
+def test_nrzi_ida_e_volta_aleatorio():
     bits = gerar_bits_aleatorios(1000, seed=4)
-    recuperado, violacoes = ami_decodificar(ami_codificar(bits))
+    recuperado = nrzi_decodificar(nrzi_codificar(bits))
     assert list(recuperado) == list(bits)
-    assert violacoes == []
 
 
-def test_ami_detecta_violacao():
-    niveis = np.array([1, 0, 1])       # dois +1 seguidos: viola a alternância
-    bits, violacoes = ami_decodificar(niveis)
-    assert violacoes == [2]
-
-
-def test_ami_decidir_limiares():
-    sinal = np.array([0.9, 0.4, -0.4, -0.9, 0.0, 1.7, -1.2, 0.5])
-    niveis = ami_decidir(sinal)
-    assert list(niveis) == [1, 0, 0, -1, 0, 1, -1, 0]
-
-
-def test_ami_com_ruido_pequeno():
-    # ruído bem menor que o limiar (0,5) não deve causar erro
-    bits = gerar_bits_aleatorios(1000, seed=5)
-    niveis = ami_codificar(bits)
-    ruido = np.random.default_rng(0).normal(0, 0.05, size=len(niveis))
-    decididos = ami_decidir(niveis + ruido)
-    recuperado, violacoes = ami_decodificar(decididos)
-    assert list(recuperado) == list(bits)
-    assert violacoes == []
+def test_nrzi_erro_de_chip_vira_dois_erros_de_bit():
+    # um chip errado no meio da sequência afeta o bit atual e o seguinte
+    bits = np.array([1, 0, 0, 1, 0])
+    niveis = nrzi_codificar(bits)      # [1, 1, 1, 0, 0]
+    niveis[2] = 0                      # chip errado
+    recuperado = nrzi_decodificar(niveis)
+    erros = int(np.sum(recuperado != bits))
+    assert erros == 2

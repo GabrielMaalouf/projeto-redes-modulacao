@@ -1,5 +1,5 @@
 # src/line_coding.py
-# Etapa 2 do sistema: codificação de linha (Manchester e AMI).
+# Etapa 2 do sistema: codificação de linha (Manchester e NRZ-I).
 #
 # CODIFICAÇÃO DE LINHA x CODIFICAÇÃO DE CORREÇÃO DE ERROS
 #  - Linha: escolhe COMO os bits viram níveis/transições de sinal (sincronismo,
@@ -7,13 +7,15 @@
 #  - Correção de erros (Hamming, Reed-Solomon...): ADICIONA bits de redundância
 #    para detectar e corrigir bits errados.
 #
-# Como cada código entra no sistema:
-#  - Manchester: a saída é binária (chips 0/1) e segue para os moduladores
-#    (BPSK, QPSK, 16-QAM). Cada bit vira 2 chips, então a taxa útil cai pela metade.
-#    A SNR (Eb/N0) é definida por chip transmitido, e a BER é medida nos bits
-#    decodificados.
-#  - AMI: a saída é ternária (+1, 0, -1) e NÃO passa pelos moduladores. Ela é
-#    avaliada em banda base: codificar -> somar ruído AWGN -> decidir -> decodificar.
+# As duas codificações usadas no trabalho têm saída binária (chips 0/1) e seguem
+# para os moduladores (BPSK, QPSK, 16-QAM):
+#  - Manchester: cada bit vira 2 chips (a taxa útil cai pela metade).
+#    Sempre há transição no meio do bit, o que ajuda o sincronismo.
+#  - NRZ-I: cada bit vira 1 chip (não aumenta a banda). O bit 1 inverte o nível
+#    e o bit 0 mantém. Sequências longas de zeros não têm transição.
+#
+# A SNR (Eb/N0) é definida por chip transmitido, e a BER é medida nos bits
+# decodificados, depois da decodificação de linha.
 
 import numpy as np
 
@@ -57,53 +59,30 @@ def manchester_decodificar(chips):
     return np.array(bits, dtype=int), erros
 
 
-# ---------- AMI ----------
+# ---------- NRZ-I ----------
 
-def ami_codificar(bits):
-    """bit 0 -> nível 0 | bit 1 -> alterna entre +1 e -1."""
+def nrzi_codificar(bits):
+    """bit 1 -> inverte o nível | bit 0 -> mantém o nível.
+    A saída tem o mesmo tamanho da entrada. O nível inicial é 0."""
     niveis = []
-    ultimo = -1          # começa em -1 para o primeiro '1' sair +1
+    nivel = 0
     for b in bits:
-        if b == 0:
-            niveis.append(0)
-        else:
-            ultimo = -ultimo      # inverte a polaridade
-            niveis.append(ultimo)
+        if b == 1:
+            nivel = 1 - nivel      # inverte (0 vira 1 e 1 vira 0)
+        niveis.append(nivel)
     return np.array(niveis, dtype=int)
 
 
-def ami_decidir(sinal, limiar=0.5):
-    """Decisão por limiares: transforma o sinal ruidoso (números reais)
-    em níveis -1, 0 ou +1.
-        sinal >  limiar  -> +1
-        sinal < -limiar  -> -1
-        caso contrário   ->  0
-    Usada depois do canal AWGN em banda base, antes de ami_decodificar()."""
-    niveis = []
-    for valor in sinal:
-        if valor > limiar:
-            niveis.append(1)
-        elif valor < -limiar:
-            niveis.append(-1)
-        else:
-            niveis.append(0)
-    return np.array(niveis, dtype=int)
-
-
-def ami_decodificar(niveis):
-    """Nível 0 -> bit 0 | nível +1 ou -1 -> bit 1.
-    Também detecta violações: dois '1' seguidos com a mesma polaridade.
-    Devolve (bits, violacoes), onde 'violacoes' é a lista de posições."""
+def nrzi_decodificar(niveis):
+    """Compara cada nível com o anterior: mudou -> bit 1; igual -> bit 0.
+    Como a decodificação é diferencial, um chip errado pode causar até
+    2 bits errados (o bit atual e o seguinte)."""
     bits = []
-    violacoes = []
-    ultimo = 0           # última polaridade vista (0 = ainda nenhuma)
-    for i in range(len(niveis)):
-        n = niveis[i]
-        if n == 0:
-            bits.append(0)
-        else:
+    anterior = 0                   # mesmo nível inicial do codificador
+    for n in niveis:
+        if n != anterior:
             bits.append(1)
-            if n == ultimo:
-                violacoes.append(i)
-            ultimo = n
-    return np.array(bits, dtype=int), violacoes
+        else:
+            bits.append(0)
+        anterior = n
+    return np.array(bits, dtype=int)
