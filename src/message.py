@@ -1,13 +1,8 @@
 # src/message.py
-# Etapa 1 do sistema: gerar os dados e convertê-los em bits (e o caminho inverso).
-#
 # Dois tipos de dados são usados no trabalho:
 #  1) Mensagem ASCII real -> usada na DEMONSTRAÇÃO e no TESTE DE CONSISTÊNCIA.
 #  2) Bits aleatórios     -> usados na VARREDURA de BER (100.000 bits x várias seeds).
-#
-# Por que bits aleatórios na varredura? Em ASCII o primeiro bit de cada byte é sempre 0
-# e as letras não são equiprováveis. A teoria de BER assume bits 0/1 equiprováveis,
-# então a mensagem ASCII repetida distorceria a comparação com as curvas teóricas.
+
 
 import numpy as np
 
