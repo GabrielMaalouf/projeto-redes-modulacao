@@ -1,0 +1,31 @@
+TESTE DE CONSISTENCIA
+Mensagem: 'Redes de Computadores - UNISINOS'
+SNR elevada: 40 dB (Eb/N0 por chip)
+
+IDEAL    BPSK   MANCHESTER  SNR=-     erros=0 pares_invalidos=0  OK  -> 'Redes de Computadores - UNISINOS'
+IDEAL    BPSK   NRZI        SNR=-     erros=0 pares_invalidos=0  OK  -> 'Redes de Computadores - UNISINOS'
+IDEAL    QPSK   MANCHESTER  SNR=-     erros=0 pares_invalidos=0  OK  -> 'Redes de Computadores - UNISINOS'
+IDEAL    QPSK   NRZI        SNR=-     erros=0 pares_invalidos=0  OK  -> 'Redes de Computadores - UNISINOS'
+IDEAL    16QAM  MANCHESTER  SNR=-     erros=0 pares_invalidos=0  OK  -> 'Redes de Computadores - UNISINOS'
+IDEAL    16QAM  NRZI        SNR=-     erros=0 pares_invalidos=0  OK  -> 'Redes de Computadores - UNISINOS'
+AWGN     BPSK   MANCHESTER  SNR=40    erros=0 pares_invalidos=0  OK  -> 'Redes de Computadores - UNISINOS'
+AWGN     BPSK   NRZI        SNR=40    erros=0 pares_invalidos=0  OK  -> 'Redes de Computadores - UNISINOS'
+AWGN     QPSK   MANCHESTER  SNR=40    erros=0 pares_invalidos=0  OK  -> 'Redes de Computadores - UNISINOS'
+AWGN     QPSK   NRZI        SNR=40    erros=0 pares_invalidos=0  OK  -> 'Redes de Computadores - UNISINOS'
+AWGN     16QAM  MANCHESTER  SNR=40    erros=0 pares_invalidos=0  OK  -> 'Redes de Computadores - UNISINOS'
+AWGN     16QAM  NRZI        SNR=40    erros=0 pares_invalidos=0  OK  -> 'Redes de Computadores - UNISINOS'
+RAJADAS  BPSK   MANCHESTER  SNR=40    erros=0 pares_invalidos=0  OK  -> 'Redes de Computadores - UNISINOS'
+RAJADAS  BPSK   NRZI        SNR=40    erros=0 pares_invalidos=0  OK  -> 'Redes de Computadores - UNISINOS'
+RAJADAS  QPSK   MANCHESTER  SNR=40    erros=0 pares_invalidos=0  OK  -> 'Redes de Computadores - UNISINOS'
+RAJADAS  QPSK   NRZI        SNR=40    erros=0 pares_invalidos=0  OK  -> 'Redes de Computadores - UNISINOS'
+RAJADAS  16QAM  MANCHESTER  SNR=40    erros=0 pares_invalidos=0  OK  -> 'Redes de Computadores - UNISINOS'
+RAJADAS  16QAM  NRZI        SNR=40    erros=0 pares_invalidos=0  OK  -> 'Redes de Computadores - UNISINOS'
+
+padding: 253 bits  BPSK   MANCHESTER  -> 253 bits recebidos, erros=0  OK
+padding: 253 bits  BPSK   NRZI        -> 253 bits recebidos, erros=0  OK
+padding: 253 bits  QPSK   MANCHESTER  -> 253 bits recebidos, erros=0  OK
+padding: 253 bits  QPSK   NRZI        -> 253 bits recebidos, erros=0  OK
+padding: 253 bits  16QAM  MANCHESTER  -> 253 bits recebidos, erros=0  OK
+padding: 253 bits  16QAM  NRZI        -> 253 bits recebidos, erros=0  OK
+
+RESULTADO: TODAS AS COMBINACOES RECUPERARAM A MENSAGEM

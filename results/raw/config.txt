@@ -1,0 +1,14 @@
+CONFIGURACAO DO EXPERIMENTO
+Modulacoes: BPSK, QPSK, 16QAM
+Codificacoes de linha: MANCHESTER, NRZI
+Canais: AWGN, RAJADAS
+SNR (Eb/N0 por chip, em dB): 0, 2, 4, 6, 8, 10, 12, 14, 16
+Bits de informacao por ensaio: 100000
+Seeds (repeticoes): 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+Piso da BER nos graficos: 1e-06
+Rajadas: P(bom->ruim) = 0.01
+Rajadas: P(ruim->bom) = 0.1
+Rajadas: queda de SNR no estado ruim (dB) = 10
+Mensagem de demonstracao: Redes de Computadores - UNISINOS
+SNR alta do teste de consistencia (dB): 40
+Total de ensaios: 1080
