@@ -1,21 +1,6 @@
 # src/line_coding.py
 # Etapa 2 do sistema: codificação de linha (Manchester e NRZ-I).
-#
-# CODIFICAÇÃO DE LINHA x CODIFICAÇÃO DE CORREÇÃO DE ERROS
-#  - Linha: escolhe COMO os bits viram níveis/transições de sinal (sincronismo,
-#    ausência de nível DC). Não adiciona redundância para corrigir erros.
-#  - Correção de erros (Hamming, Reed-Solomon...): ADICIONA bits de redundância
-#    para detectar e corrigir bits errados.
-#
-# As duas codificações usadas no trabalho têm saída binária (chips 0/1) e seguem
-# para os moduladores (BPSK, QPSK, 16-QAM):
-#  - Manchester: cada bit vira 2 chips (a taxa útil cai pela metade).
-#    Sempre há transição no meio do bit, o que ajuda o sincronismo.
-#  - NRZ-I: cada bit vira 1 chip (não aumenta a banda). O bit 1 inverte o nível
-#    e o bit 0 mantém. Sequências longas de zeros não têm transição.
-#
-# A SNR (Eb/N0) é definida por chip transmitido, e a BER é medida nos bits
-# decodificados, depois da decodificação de linha.
+
 
 import numpy as np
 
