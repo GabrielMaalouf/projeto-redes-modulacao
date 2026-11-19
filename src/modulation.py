@@ -1,19 +1,10 @@
 # src/modulation.py
-# Etapa 3 do sistema: modulação digital (BPSK, QPSK e 16-QAM) e demodulação.
-#
+
 # Modular = transformar grupos de bits em SÍMBOLOS (números complexos I + jQ).
 #   BPSK   : 1 bit por símbolo   (2 símbolos)
 #   QPSK   : 2 bits por símbolo  (4 símbolos)
 #   16-QAM : 4 bits por símbolo  (16 símbolos)
-#
-# Combinações combinadas entre os módulos:
-#   - bits são arrays do numpy com 0 e 1
-#   - símbolos são arrays complexos com ENERGIA MÉDIA = 1
-#   - o mapeamento é Gray: símbolos vizinhos diferem em apenas 1 bit
-#   - a demodulação é por decisão direta ("hard decision")
-#
-# Se a quantidade de bits não for múltipla de bits por símbolo, completamos com
-# zeros no final. Quem chama deve cortar os bits recebidos com [:len(bits_originais)].
+
 
 import numpy as np
 
@@ -22,12 +13,10 @@ BITS_POR_SIMBOLO = {"BPSK": 1, "QPSK": 2, "16QAM": 4}
 
 
 def bits_por_simbolo(modulacao):
-    """Devolve quantos bits cada símbolo carrega: BPSK=1, QPSK=2, 16QAM=4."""
     return BITS_POR_SIMBOLO[modulacao]
 
 
 def completar_bits(bits, k):
-    """Completa com zeros no final até a quantidade ser múltipla de k."""
     sobra = len(bits) % k
     if sobra == 0:
         return np.array(bits, dtype=int)
@@ -53,9 +42,6 @@ def demodular_bpsk(simbolos):
 # ---------- QPSK ----------
 
 def modular_qpsk(bits):
-    """Cada par de bits vira 1 símbolo.
-    O 1º bit controla o eixo I e o 2º bit controla o eixo Q (isso já é Gray).
-    bit 0 -> -1 e bit 1 -> +1, divididos por raiz de 2 para a energia ficar 1."""
     bits = completar_bits(bits, 2)
     grupos = bits.reshape(-1, 2)              # uma linha por símbolo
     parte_i = 2 * grupos[:, 0] - 1
@@ -74,8 +60,6 @@ def demodular_qpsk(simbolos):
 # ---------- 16-QAM ----------
 
 def _bits_para_nivel(bit_a, bit_b):
-    """Gray de 2 bits para um eixo: 00 -> -3, 01 -> -1, 11 -> +1, 10 -> +3.
-    O 1º bit dá o sinal e o 2º bit dá a distância do centro."""
     sinal = 2 * bit_a - 1                     # bit 0 -> -1 e bit 1 -> +1
     modulo = 3 - 2 * bit_b                    # bit 0 -> 3 e bit 1 -> 1
     return sinal * modulo
@@ -92,8 +76,6 @@ def modular_16qam(bits):
 
 
 def _nivel_para_bits(valor):
-    """Inverso do anterior, com limiares em -2, 0 e +2 (na escala sem normalizar).
-    Devolve os 2 bits do eixo."""
     bit_a = (valor > 0).astype(int)           # sinal
     bit_b = (np.abs(valor) < 2).astype(int)   # perto do centro -> 1; longe -> 0
     return bit_a, bit_b
@@ -136,8 +118,8 @@ def demodular(simbolos, modulacao):
 
 
 def constelacao(modulacao):
-    """Devolve todos os símbolos ideais e os bits de cada um.
-    Serve para testes e para desenhar o diagrama de constelação."""
+    """Devolve todos os símbolos ideais e os bits de cada um.        
+    Serve para testes e para desenhar o diagrama de constelação.""" # CONFERIR SE ESTÁ FAZENDO SENTIDO NO CÓDIGO FINAL!
     k = bits_por_simbolo(modulacao)
     lista_bits = []
     for numero in range(2 ** k):
