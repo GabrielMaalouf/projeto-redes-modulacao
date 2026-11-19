@@ -227,7 +227,7 @@ O README foi escrito em conjunto, e os dois participam da apresentação oral.
 
 ## 13. Vídeo
 
-Vídeo de demonstração (até 5 minutos): **COLAR AQUI O LINK** ou arquivo em `video/`.
+O vídeo de demonstração se encontra na pasta `video/` do github em arquivo .mp4.
 
 ## Referências
 
