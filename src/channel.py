@@ -5,7 +5,6 @@
 #  2) Rajadas: o canal alterna entre um estado BOM (SNR nominal) e um estado RUIM
 #     (SNR nominal menos 10 dB). 
 
-
 import math
 import numpy as np
 
