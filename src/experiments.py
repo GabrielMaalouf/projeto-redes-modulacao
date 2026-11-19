@@ -1,10 +1,5 @@
 # src/experiments.py
-# Plano experimental:
-#  1) varredura de BER (todas as combinações de canal, modulação, codificação,
-#     SNR e seed) -> results/raw/results.csv  (resultados BRUTOS, um ensaio por linha)
-#  2) recuperação da mensagem ASCII nos dois canais -> results/raw/mensagem.csv
-#  3) teste de consistência (canal ideal e SNR elevada) -> results/consistencia.txt
-#  4) demonstração com a mensagem (mostra bits incorretos e o texto recebido)
+
 
 import csv
 import os
@@ -34,7 +29,7 @@ def executar_varredura(arquivo_csv=config.ARQUIVO_CSV, n_bits=config.N_BITS,
                        seeds=config.SEEDS, snrs=config.SNRS_DB, verbose=True):
     """Roda todos os ensaios e grava uma linha por ensaio no CSV.
     Para cada seed os bits são gerados uma única vez e reutilizados em todas as
-    combinações (mesmos bits para todas as modulações -> parâmetros equivalentes)."""
+    combinações"""
     _garantir_pasta(arquivo_csv)
     with open(config.ARQUIVO_CONFIG, "w", encoding="utf-8") as f:
         f.write(config.texto_da_configuracao())
@@ -119,9 +114,6 @@ def ler_mensagens(arquivo_csv=ARQUIVO_MENSAGEM):
 
 def teste_de_consistencia(mensagem=config.MENSAGEM_DEMO, snr_alta=config.SNR_ALTA_DB,
                           seed=config.SEEDS[0], arquivo=ARQUIVO_CONSISTENCIA):
-    """Em canal ideal (sem ruído) e em SNR elevada, a mensagem deve voltar idêntica.
-    Também testa uma mensagem cujo tamanho NÃO é múltiplo dos bits por símbolo,
-    para verificar o complemento com zeros (padding) e o corte no receptor."""
     linhas = ["TESTE DE CONSISTENCIA",
               "Mensagem: " + repr(mensagem),
               "SNR elevada: %s dB (Eb/N0 por chip)" % snr_alta, ""]
