@@ -2,11 +2,7 @@
 
 Trabalho II de Redes de Computadores (UNISINOS), em dupla: **Gabriel Maalouf** e **Pedro Schmidt**.
 
-Neste trabalho construímos, em Python, um simulador de transmissão digital completo: uma mensagem em
-ASCII vira bits, passa por uma **codificação de linha**, é **modulada**, atravessa um **canal ruidoso**,
-é demodulada e decodificada, e no fim comparamos o que chegou com o que foi enviado. Com isso medimos
-a **taxa de erro de bits (BER)** e a **eficiência espectral** de cada combinação de técnicas e
-analisamos como o ruído, e principalmente o ruído em rajadas, muda o resultado.
+Neste trabalho, usamos Python para criar um simulador completo de transmissão digital. Uma mensagem em ASCII é transformada em bits, passa por codificação de linha, é modulada, atravessa um canal ruidoso, é demodulada e decodificada, e no final comparamos o que chegou com o que foi enviado. Assim, medimos a taxa de erro de bits (BER) e a eficiência espectral de cada combinação de técnicas, e analisamos como o ruído, e especialmente o ruído em rajadas, altera o resultado.
 
 O que foi implementado:
 
