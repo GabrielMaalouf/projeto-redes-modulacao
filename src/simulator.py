@@ -1,11 +1,5 @@
 # src/simulator.py
-# Cadeia completa do sistema (ponta a ponta):
-#
-#   bits -> codificação de linha -> modulação -> CANAL -> demodulação
-#        -> decodificação de linha -> bits recebidos -> métricas
-#
-# Todas as etapas usam os módulos já existentes. Este arquivo só "liga os fios".
-#
+
 # Seeds:
 #  - a seed do ensaio gera os BITS (mesmos bits para todas as modulações,
 #    codificações, canais e SNRs -> comparação justa);
@@ -25,14 +19,12 @@ DESLOCAMENTO_SEED_RUIDO = 100000
 
 
 def seed_do_ruido(seed):
-    """Seed usada pelo canal a partir da seed do ensaio."""
     return seed + DESLOCAMENTO_SEED_RUIDO
 
 
 # ---------- Codificação de linha pelo nome ----------
 
 def codificar_linha(bits, codificacao):
-    """codificacao: "MANCHESTER" ou "NRZI". Devolve os chips (0/1)."""
     if codificacao == "MANCHESTER":
         return manchester_codificar(bits)
     elif codificacao == "NRZI":
@@ -42,8 +34,6 @@ def codificar_linha(bits, codificacao):
 
 
 def decodificar_linha(chips, codificacao):
-    """Devolve (bits, pares_invalidos). Só o Manchester detecta pares inválidos;
-    no NRZ-I a lista é sempre vazia."""
     if codificacao == "MANCHESTER":
         return manchester_decodificar(chips)
     elif codificacao == "NRZI":
@@ -93,5 +83,4 @@ def transmitir(bits, codificacao, modulacao, canal, snr_db, seed):
 
 
 def posicoes_incorretas(resultado):
-    """Atalho: posições dos bits incorretos de uma transmissão."""
     return posicoes_dos_erros(resultado["bits"], resultado["bits_recebidos"])
