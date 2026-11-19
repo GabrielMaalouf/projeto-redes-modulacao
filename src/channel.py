@@ -3,15 +3,7 @@
 # Dois cenários:
 #  1) AWGN: ruído gaussiano branco aditivo, com a SNR controlada por Eb/N0 (em dB).
 #  2) Rajadas: o canal alterna entre um estado BOM (SNR nominal) e um estado RUIM
-#     (SNR nominal menos 10 dB). Isso é uma DEGRADAÇÃO ADICIONAL do canal: os erros
-#     aparecem agrupados, como em uma interferência que liga e desliga.
-#
-# Definição de SNR usada no trabalho:
-#  - Eb/N0 é a energia por bit transmitido (por chip, pois o Manchester envia 2 chips
-#    por bit) dividida pela densidade de ruído.
-#  - Como os símbolos têm energia média 1 (contrato com o modulation.py):
-#        Es/N0 = Eb/N0 * bits_por_simbolo
-#        variância do ruído por eixo (I e Q) = 1 / (2 * Es/N0)
+#     (SNR nominal menos 10 dB). 
 
 
 import math
@@ -71,9 +63,9 @@ def canal_awgn(simbolos, ebn0_db, bits_por_simbolo, seed):
 
 def canal_rajadas(simbolos, ebn0_db, bits_por_simbolo, seed):
     """Canal com rajadas: no estado bom o ruído é o do AWGN (SNR nominal);
-    no estado ruim a SNR é 10 dB menor, ou seja, o ruído é mais forte.
+    no estado ruim a SNR é 10 dB menor, ou seja, o ruíd é mais forte.
     Com a mesma seed, o ruído sorteado é o mesmo do canal_awgn: a única
-    diferença é que, no estado ruim, ele é amplificado. Isso deixa a comparação justa."""
+    diferença é que, no estado ruim, ele é amplificado. Isso deixa a comaração justa."""
     gerador = np.random.default_rng(seed)
     ruido_unitario = gerar_ruido_unitario(len(simbolos), gerador)
     estados = gerar_estados_rajadas(len(simbolos), gerador)
